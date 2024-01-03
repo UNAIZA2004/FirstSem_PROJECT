@@ -1,0 +1,1921 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <math.h>
+// Function prototypes
+// Function prototypes for linear search
+int linearSearchUnique(int arr[], int size, int key);
+void linearSearchNonUnique(int arr[], int size, int key);
+
+// Function prototypes for binary search
+int binarySearch(int arr[], int low, int high, int key);
+
+// Structure to represent the stack
+#define MAX_SIZE 10
+struct Stack {
+    int items[10];  // Assuming a maximum stack size of 10
+    int top;
+};
+
+// Function prototypes for stack operations
+void initialize(struct Stack* stack);
+int isEmptys(const struct Stack *stack) {
+    return stack->top == -1;
+}
+int isFulls(struct Stack* stack);
+void push(struct Stack* stack, int value) {
+    if (isFulls(stack)) {
+        printf("Stack overflow. Cannot push %d onto the stack.\n", value);
+    } else {
+        stack->items[++stack->top] = value;
+        printf("%d pushed onto the stack.\n", value);
+    }
+}
+
+void pop(struct Stack* stack) {
+    if (isEmptys(stack)) {
+        printf("Stack underflow. Cannot pop from an empty stack.\n");
+    } else {
+        printf("%d popped from the stack.\n", stack->items[stack->top--]);
+    }
+}
+void display(struct Stack* stack);
+
+// Structure to represent the queue
+struct Queue {
+    int items[10];  // Assuming a maximum queue size of 10
+    int front, rear;
+};
+
+// Function prototypes for queue operations
+void initializeQueue(struct Queue* queue);
+int isEmptyq(struct Queue* queue);
+int isFullq(struct Queue* queue);
+void enqueue(struct Queue* queue, int value);
+void dequeue(struct Queue* queue);
+void displayQueue(struct Queue* queue);
+
+
+void rightHalfPyramid(int rows);
+void leftHalfPyramid(int rows);
+void fullPyramid(int rows);
+void invertedRightHalfPyramid(int rows);
+void invertedLeftHalfPyramid(int rows);
+void invertedFullPyramid(int rows);
+void rhombus(int rows);
+void hollowSquare(int rows);
+void hollowFullPyramid(int rows);
+void hollowFullInvertedPyramid(int rows);
+void diamond(int n);
+void hourglass(int rows);
+void floydsTriangle(int rows);
+void pascalsTriangle(int rows);
+
+void quadraticRoots();
+void calculateBMI();
+void calculateLoanInterest();
+void playMatchstickGame();
+int findMaxLengthSubarray(int n, int A[], int sum);
+void printfib(int n);
+int fib(int n);
+void SentenceCase(char *Text, int *size);
+
+void factorial(int n);
+double power(double base, double exponent);
+double squareRoot(double num);
+double logarithm(double num, double base);
+int gcd(int a, int b);
+int lcm(int a, int b);
+double absoluteValue(double num);
+double sine(double angle);
+double cosine(double angle);
+double tangent(double angle);
+double exponential(double base, double exponent);
+
+void romanToInt(char *s);
+void reverseString(char *str);
+int isPalindrome(const char *str);
+void countVowelsAndConsonants(const char *str, int *vowels, int *consonants);
+void removeSpaces(char *str);
+int substringSearch(const char *str, const char *substring);
+void concatenateStrings(char *dest, const char *src);
+int stringLength(const char *str);
+void reverseWords(char *str);
+void replaceSubstring(char *str, const char *substring, const char *replacement);
+
+
+
+void insertionSort(int arr[], int n);
+void selectionSort(int arr[], int n);
+void merge(int arr[], int l, int m, int r);
+void mergeSort(int arr[], int l, int r);
+void bubbleSort(int arr[], int n);
+void findMinimum(int arr[], int n);
+void findMaximum(int arr[], int n);
+void shiftRight(int arr[], int n, int k);
+void shiftLeft(int arr[], int n, int k);
+void quickSort(int arr[], int low, int high);
+int partition(int arr[], int low, int high);
+void heapSort(int arr[], int n);
+void heapify(int arr[], int n, int i);
+
+void toLowerCase(char *str);
+const char *findSimilarKeyword(const char *input, const char *keywordList[], int numKeywords, int similarityThreshold);
+
+void executeCode(const char *selectedKeyword);
+void displayOptions(const char *keywords[], int numKeywords);
+void displayCategories(const char *categories[], int numCategories);
+
+
+
+int main() {
+    
+    const char *categories[] = {"string", "math", "sorting", "patterns", "algorithm","lab tasks", "exit"};
+    
+    const char *patternKeywords[] = {"right half pyramid", "left half pyramid", "full pyramid", "inverted right half pyramid",
+                                 "inverted left half pyramid", "inverted full pyramid", "rhombus", "hollow square",
+                                 "hollow full pyramid", "hollow full inverted pyramid", "diamond", "hourglass",
+                                 "floyd's triangle", "pascal's triangle", "exit"};       
+								                      
+    const char *stringKeywords[] = {"reverse", "roman to integer","concatenate strings","count vowels and consonants","is palindrome", "substring search",
+												"remove spaces","substring search","reverse words","string length", "exit"};
+     const char *algorithmKeywords[] = {"linear search unique", "linear search non-unique", "binary search", "stack algorithm", "queue algorithm", "exit"};
+    const char *mathKeywords[] = {"factorial","sine","cosine","tangent","lcm","gcd","power","square root","logarithm","absolute value", "exit"};
+    const char *sortingKeywords[] = {"bubble sort", "find minimum", "find maximum","insertion sort","merge sort",
+										"selection sort","shift right","shift left","heap sort","quick sort","exit"};
+   const char *labKewords[]={"quadratic roots","bmi calculator","interest calculator","matchstick game","max length subarray","fibonacci","sentence case","exit"};
+    
+	
+	int numCategories = sizeof(categories) / sizeof(categories[0]);
+    printf("Welcome to the Code Library!");
+    while (1) {
+        char userInput[100];
+        printf("\nChoose a category.\n");
+        displayCategories(categories, numCategories);
+        fgets(userInput, sizeof(userInput), stdin);
+        userInput[strcspn(userInput, "\n")] = '\0'; // Remove the newline character
+        toLowerCase(userInput);
+
+        if (strcmp(userInput, "exit") == 0) {
+            printf("Exiting the code library. Goodbye!\n");
+            break;
+        } else {
+            const char *selectedCategory = findSimilarKeyword(userInput, categories, numCategories, 2);
+
+            if (selectedCategory == NULL) {
+                printf("Category not recognized. Searching for similar categories...\n");
+                selectedCategory = findSimilarKeyword(userInput, categories, numCategories, 2);
+                if (selectedCategory != NULL) {
+                    printf("Invalid choice. Try again.\n");
+                    continue;
+                } else if (selectedCategory == NULL) {
+                    printf("Invalid choice. Try again.\n");
+                    continue;
+                }
+            }
+
+            const char **keywords;
+            int numKeywords;
+
+            if (strcmp(selectedCategory, "string") == 0) {
+                keywords = stringKeywords;
+                numKeywords = sizeof(stringKeywords) / sizeof(stringKeywords[0]);
+            } else if (strcmp(selectedCategory, "math") == 0) {
+                keywords = mathKeywords;
+                numKeywords = sizeof(mathKeywords) / sizeof(mathKeywords[0]);
+            } 
+             else if (strcmp(selectedCategory, "patterns") == 0) {
+                keywords = patternKeywords;
+                numKeywords = sizeof(patternKeywords)/sizeof(patternKeywords[0]);
+            }
+             else if (strcmp(selectedCategory, "sorting") == 0) {
+                keywords = sortingKeywords;
+                numKeywords = sizeof(sortingKeywords) / sizeof(sortingKeywords[0]);
+            }
+             else if(strcmp(selectedCategory, "algorithm") == 0) {
+                keywords = algorithmKeywords;
+                numKeywords = sizeof(algorithmKeywords) / sizeof(algorithmKeywords[0]);
+
+             }
+             else if(strcmp(selectedCategory, "lab tasks")==0){
+             	keywords = labKewords;
+             	numKeywords =sizeof(labKewords)/sizeof(labKewords[0]);
+			 }
+
+             else {
+                printf("Invalid category. Try again.\n");
+                continue;
+            }
+
+
+            // Display available options in the selected category
+            displayOptions(keywords, numKeywords);
+
+            while (1) {
+                char keywordInput[50];
+                printf("\nChoose the code type in the '%s' category or exit:\n", selectedCategory);
+                fgets(keywordInput, sizeof(keywordInput), stdin);
+                keywordInput[strcspn(keywordInput, "\n")] = '\0'; // Remove the newline character
+                toLowerCase(keywordInput);
+
+                if (strcmp(keywordInput, "exit") == 0) {
+                    printf("Exiting the '%s' category. Returning to category selection.\n", selectedCategory);
+                    break;
+                } else {
+                    const char *selectedKeyword = findSimilarKeyword(keywordInput, keywords, numKeywords, 2);
+
+                    if (selectedKeyword == NULL) {
+                        selectedKeyword = findSimilarKeyword(keywordInput, keywords, numKeywords, 2);
+                        if (selectedKeyword != NULL ) {
+                            printf("Invalid choice. Try again.\n");
+                            continue;
+                        } else if (selectedKeyword == NULL) {
+                            printf("Invalid choice. Try again.\n");
+                            continue;
+                        }
+                    }
+
+                    if (selectedKeyword != NULL) {
+                        executeCode(selectedKeyword);
+                    } else {
+                        printf("Invalid choice. Try again.\n");
+                    }
+                }
+            }
+        }
+    }
+
+    return 0;
+}
+
+void displayCategories(const char *categories[], int numCategories) {
+    printf("Available categories:\n");
+    for (int i = 0; i < numCategories; i++) {
+        printf("- %s\n", categories[i]);
+    }
+}
+
+void displayOptions(const char *keywords[], int numKeywords) {
+    printf("\nAvailable codes in this category:\n");
+    for (int i = 0; i < numKeywords; i++) {
+        printf("- %s\n", keywords[i]);
+    }
+}
+
+void executeCode(const char *selectedKeyword) {
+    
+    if (strcmp(selectedKeyword, "reverse") == 0) {
+        char str[100];
+        printf("Enter a string to reverse: ");
+        fgets(str, sizeof(str), stdin);
+        str[strcspn(str, "\n")] = '\0'; // Remove the newline character
+        reverseString(str);
+        printf("Reversed string: %s\n", str);
+        getchar();
+    } 
+    else if (strcmp(selectedKeyword, "roman to integer") == 0) {
+        char roman[20];
+        printf("Enter a Roman numeral: ");
+        fgets(roman, sizeof(roman), stdin);
+        roman[strcspn(roman, "\n")] = '\0'; // Remove the newline character
+        romanToInt(roman);
+    } 
+    else if (strcmp(selectedKeyword, "is palindrome") == 0) {
+    char str[100];
+    printf("Enter a string to check if it's a palindrome: ");
+    fgets(str, sizeof(str), stdin);
+    str[strcspn(str, "\n")] = '\0'; // Remove the newline character
+    int result = isPalindrome(str);
+    if (result) {
+        printf("The entered string is a palindrome.\n");
+    } else {
+        printf("The entered string is not a palindrome.\n");
+    }
+}
+else if (strcmp(selectedKeyword, "count vowels and consonants") == 0) {
+    char str[100];
+    int vowels, consonants;
+    printf("Enter a string to count vowels and consonants: ");
+    fgets(str, sizeof(str), stdin);
+    str[strcspn(str, "\n")] = '\0'; // Remove the newline character
+    countVowelsAndConsonants(str, &vowels, &consonants);
+    printf("Vowels: %d, Consonants: %d\n", vowels, consonants);
+}
+else if (strcmp(selectedKeyword, "remove spaces") == 0) {
+    char str[100];
+    printf("Enter a string to remove spaces: ");
+    fgets(str, sizeof(str), stdin);
+    str[strcspn(str, "\n")] = '\0'; // Remove the newline character
+    removeSpaces(str);
+    printf("String after removing spaces: %s\n", str);
+}
+else if (strcmp(selectedKeyword, "substring search") == 0) {
+    char str[100], substring[50];
+    printf("Enter a string: ");
+    fgets(str, sizeof(str), stdin);
+    str[strcspn(str, "\n")] = '\0'; // Remove the newline character
+    printf("Enter a substring to search: ");
+    fgets(substring, sizeof(substring), stdin);
+    substring[strcspn(substring, "\n")] = '\0'; // Remove the newline character
+    int result = substringSearch(str, substring);
+    if (result) {
+        printf("The substring is present in the string.\n");
+    } else {
+        printf("The substring is not present in the string.\n");
+    }
+}
+else if (strcmp(selectedKeyword, "concatenate strings") == 0) {
+    char dest[100], src[50];
+    printf("Enter the destination string: ");
+    fgets(dest, sizeof(dest), stdin);
+    dest[strcspn(dest, "\n")] = '\0'; // Remove the newline character
+    printf("Enter the source string: ");
+    fgets(src, sizeof(src), stdin);
+    src[strcspn(src, "\n")] = '\0'; // Remove the newline character
+    concatenateStrings(dest, src);
+    printf("Concatenated string: %s\n", dest);
+}  
+else if (strcmp(selectedKeyword, "string length") == 0) {
+    char str[100];
+    printf("Enter a string to find its length: ");
+    fgets(str, sizeof(str), stdin);
+    str[strcspn(str, "\n")] = '\0'; // Remove the newline character
+    int length = stringLength(str);
+    printf("Length of the string: %d\n", length);
+}
+else if (strcmp(selectedKeyword, "reverse words") == 0) {
+    char str[100];
+    printf("Enter a string to reverse its words: ");
+    fgets(str, sizeof(str), stdin);
+    str[strcspn(str, "\n")] = '\0'; // Remove the newline character
+    reverseWords(str);
+    printf("String after reversing words: %s\n", str);
+}
+else if (strcmp(selectedKeyword, "replace substring") == 0) {
+    char str[100], substring[50], replacement[50];
+    printf("Enter a string: ");
+    fgets(str, sizeof(str), stdin);
+    str[strcspn(str, "\n")] = '\0'; // Remove the newline character
+    printf("Enter a substring to replace: ");
+    fgets(substring, sizeof(substring), stdin);
+    substring[strcspn(substring, "\n")] = '\0'; // Remove the newline character
+    printf("Enter the replacement string: ");
+    fgets(replacement, sizeof(replacement), stdin);
+    replacement[strcspn(replacement, "\n")] = '\0'; // Remove the newline character
+    replaceSubstring(str, substring, replacement);
+    printf("String after replacement: %s\n", str);
+}
+else if (strcmp(selectedKeyword, "shift right") == 0) {
+    int n, k;
+    printf("Enter the size of the array: ");
+    scanf("%d", &n);
+
+    int arr[n];
+    printf("Enter the elements of the array:\n");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    printf("Enter the number of positions to shift to the right: ");
+    scanf("%d", &k);
+
+    shiftRight(arr, n, k);
+
+    printf("Array after shifting to the right by %d positions:\n", k);
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
+else if (strcmp(selectedKeyword, "shift left") == 0) {
+    int n, k;
+    printf("Enter the size of the array: ");
+    scanf("%d", &n);
+
+    int arr[n];
+    printf("Enter the elements of the array:\n");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    printf("Enter the number of positions to shift to the left: ");
+    scanf("%d", &k);
+
+    shiftLeft(arr, n, k);
+
+    printf("Array after shifting to the left by %d positions:\n", k);
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
+    else if (strcmp(selectedKeyword, "factorial") == 0) {
+        int n;
+        printf("Enter a number to find its factorial: ");
+        scanf("%d", &n);
+        getchar(); // Consume the newline character left by previous input
+        factorial(n);
+    } else if (strcmp(selectedKeyword, "power") == 0) {
+        double base, exponent;
+        printf("Enter the base: ");
+        scanf("%lf", &base);
+        getchar(); // Consume the newline character left by previous input
+        printf("Enter the exponent: ");
+        scanf("%lf", &exponent);
+        getchar(); // Consume the newline character left by previous input
+        printf("Result of power calculation: %lf\n", power(base, exponent));
+    } else if (strcmp(selectedKeyword, "square root") == 0) {
+        double num;
+        printf("Enter a non-negative number: ");
+        scanf("%lf", &num);
+        getchar(); // Consume the newline character left by previous input
+        printf("Square root: %lf\n", squareRoot(num));
+    } else if (strcmp(selectedKeyword, "logarithm") == 0) {
+        double num, base;
+        printf("Enter the number: ");
+        scanf("%lf", &num);
+        getchar(); // Consume the newline character left by previous input
+        printf("Enter the base: ");
+        scanf("%lf", &base);
+        getchar(); // Consume the newline character left by previous input
+        printf("Result of logarithm calculation: %lf\n", logarithm(num, base));
+    } else if (strcmp(selectedKeyword, "gcd") == 0) {
+        int a, b;
+        printf("Enter the first integer: ");
+        scanf("%d", &a);
+        getchar(); // Consume the newline character left by previous input
+        printf("Enter the second integer: ");
+        scanf("%d", &b);
+        getchar(); // Consume the newline character left by previous input
+        printf("GCD: %d\n", gcd(a, b));
+    } else if (strcmp(selectedKeyword, "lcm") == 0) {
+        int a, b;
+        printf("Enter the first integer: ");
+        scanf("%d", &a);
+        getchar(); // Consume the newline character left by previous input
+        printf("Enter the second integer: ");
+        scanf("%d", &b);
+        getchar(); // Consume the newline character left by previous input
+        printf("LCM: %d\n", lcm(a, b));
+    } else if (strcmp(selectedKeyword, "absolute value") == 0) {
+        double num;
+        printf("Enter a real number: ");
+        scanf("%lf", &num);
+        getchar(); // Consume the newline character left by previous input
+        printf("Absolute value: %lf\n", absoluteValue(num));
+    } else if (strcmp(selectedKeyword, "sine") == 0) {
+        double angle;
+        printf("Enter the angle in radians: ");
+        scanf("%lf", &angle);
+        getchar(); // Consume the newline character left by previous input
+        printf("Sine value: %lf\n", sine(angle));
+    } else if (strcmp(selectedKeyword, "cosine") == 0) {
+        double angle;
+        printf("Enter the angle in radians: ");
+        scanf("%lf", &angle);
+        getchar(); // Consume the newline character left by previous input
+        printf("Cosine value: %lf\n", cosine(angle));
+    } else if (strcmp(selectedKeyword, "tangent") == 0) {
+        double angle;
+        printf("Enter the angle in radians: ");
+        scanf("%lf", &angle);
+        getchar();
+    } else if (strcmp(selectedKeyword, "quadratic roots") == 0) {
+    	quadraticRoots();
+    	getchar();
+    	
+    } else if (strcmp(selectedKeyword, "bmi calculator") == 0) {
+    calculateBMI();
+    getchar();
+    } else if (strcmp(selectedKeyword, "interest calculator") == 0) {
+    calculateLoanInterest();
+    getchar();
+    } else if (strcmp(selectedKeyword, "matchstick game") == 0) {
+    playMatchstickGame();
+    getchar();
+	} else if (strcmp(selectedKeyword, "max length subarray") == 0) {
+    int n, sum;
+
+    printf("Enter size of the array: ");
+    scanf("%d", &n);
+
+    printf("Enter elements of the array: ");
+    int A[n];
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &A[i]);
+    }
+
+    printf("Enter the sum of the subarray: ");
+    scanf("%d", &sum);
+
+    int length = findMaxLengthSubarray(n, A, sum);
+
+    if (length == 0) {
+        printf("No subarray found with given sum.\n");
+    } else {
+        printf("The maximum length of the subarray with sum %d is %d.\n", sum, length);
+    }
+	
+	} else if (strcmp(selectedKeyword, "fibonacci") == 0) {
+        int n;
+        printf("Enter the number of Fibonacci numbers to print: ");
+        scanf("%d", &n);
+        printfib(n);
+    } if (strcmp(selectedKeyword, "sentence case") == 0) {
+        printf("Enter n:\n");
+        int n;
+        scanf("%d", &n);
+        char arr[n];
+        for (int i = 0; i < n; i++) {
+            printf("Enter %d-th character of the array:\n", i + 1);
+            scanf(" %c", &arr[i]);
+        }
+        printf("Original Array: ");
+        for (int i = 0; i < n; i++) {
+            printf("%c", arr[i]);
+        }
+        printf("\n");
+        int size = n;
+
+        // Call the SentenceCase function
+        SentenceCase(arr, &size);
+
+        printf("Corrected Array (Sentence Case): ");
+        for (int i = 0; i < size; i++) {
+            printf("%c", arr[i]);
+        }
+        printf("\n");
+	getchar();
+
+
+}
+    
+	 else if (strcmp(selectedKeyword, "bubble sort") == 0) {
+        int n;
+        printf("Enter the number of elements in the array: ");
+        scanf("%d", &n);
+        getchar(); // Consume the newline character left by previous input
+        int arr[n];
+        printf("Enter the elements of the array:\n");
+        for (int i = 0; i < n; i++) {
+            scanf("%d", &arr[i]);
+        }
+        bubbleSort(arr, n);
+        printf("Sorted array using Bubble Sort:\n");
+        for (int i = 0; i < n; i++) {
+            printf("%d ", arr[i]);
+        }
+        printf("\n");
+         getchar();
+    } else if (strcmp(selectedKeyword, "find minimum") == 0) {
+        int n;
+        printf("Enter the number of elements in the array: ");
+        scanf("%d", &n);
+        // Consume the newline character left by previous input
+        int arr[n];
+        printf("Enter the elements of the array:\n");
+        for (int i = 0; i < n; i++) {
+            scanf("%d", &arr[i]);
+        }
+        findMinimum(arr, n);
+         getchar();
+    } else if (strcmp(selectedKeyword, "find maximum") == 0) {
+        int n;
+        printf("Enter the number of elements in the array: ");
+        scanf("%d", &n);
+        getchar(); // Consume the newline character left by previous input
+        int arr[n];
+        printf("Enter the elements of the array:\n");
+        for (int i = 0; i < n; i++) {
+            scanf("%d", &arr[i]);
+        }
+        findMaximum(arr, n);
+         getchar(); 
+    } else if (strcmp(selectedKeyword, "insertion sort") == 0) {
+    int n;
+    printf("Enter the number of elements in the array: ");
+    scanf("%d", &n);
+    getchar(); // Consume the newline character left by previous input
+    int arr[n];
+    printf("Enter the elements of the array:\n");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+    insertionSort(arr, n);
+    printf("Sorted array using Insertion Sort:\n");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+    getchar();
+} else if (strcmp(selectedKeyword, "selection sort") == 0) {
+    int n;
+    printf("Enter the number of elements in the array: ");
+    scanf("%d", &n);
+    getchar(); // Consume the newline character left by previous input
+    int arr[n];
+    printf("Enter the elements of the array:\n");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+    selectionSort(arr, n);
+    printf("Sorted array using Selection Sort:\n");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+    getchar();
+} else if (strcmp(selectedKeyword, "merge sort") == 0) {
+        int n;
+        printf("Enter the number of elements in the array: ");
+        scanf("%d", &n);
+        getchar(); // Consume the newline character left by previous input
+        int arr[n];
+        printf("Enter the elements of the array:\n");
+        for (int i = 0; i < n; i++) {
+            scanf("%d", &arr[i]);
+        }
+        mergeSort(arr, 0, n - 1);
+        printf("Sorted array using Merge Sort:\n");
+        for (int i = 0; i < n; i++) {
+            printf("%d ", arr[i]);
+        }
+         getchar();
+        printf("\n");
+       
+    } 
+    else if (strcmp(selectedKeyword, "quick sort") == 0) {
+    int n;
+    printf("Enter the number of elements in the array: ");
+    scanf("%d", &n);
+    getchar(); // Consume the newline character left by previous input
+
+    int arr[n];
+    printf("Enter the elements of the array:\n");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    quickSort(arr, 0, n - 1);
+
+    printf("Sorted array using Quick Sort:\n");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+    getchar(); // Consume the newline character
+}
+else if (strcmp(selectedKeyword, "heap sort") == 0) {
+    int n;
+    printf("Enter the number of elements in the array: ");
+    scanf("%d", &n);
+    getchar(); // Consume the newline character left by previous input
+
+    int arr[n];
+    printf("Enter the elements of the array:\n");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    heapSort(arr, n);
+
+    printf("Sorted array using Heap Sort:\n");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+    getchar(); // Consume the newline character
+}
+    
+     else if (strcmp(selectedKeyword, "right half pyramid") == 0) {
+        int rows;
+        printf("Enter the number of rows for the right half pyramid: ");
+        scanf("%d", &rows);
+        rightHalfPyramid(rows);
+          getchar(); 
+    } else if (strcmp(selectedKeyword, "left half pyramid") == 0) {
+        int rows;
+        printf("Enter the number of rows for the left half pyramid: ");
+        scanf("%d", &rows);
+        leftHalfPyramid(rows);
+          getchar(); 
+    } else if (strcmp(selectedKeyword, "full pyramid") == 0) {
+        int rows;
+        printf("Enter the number of rows for the full pyramid: ");
+        scanf("%d", &rows);
+        fullPyramid(rows);
+          getchar(); 
+    } else if (strcmp(selectedKeyword, "inverted right half pyramid") == 0) {
+        int rows;
+        printf("Enter the number of rows for the inverted right half pyramid: ");
+        scanf("%d", &rows);
+        invertedRightHalfPyramid(rows);
+          getchar(); 
+    } else if (strcmp(selectedKeyword, "inverted left half pyramid") == 0) {
+        int rows;
+        printf("Enter the number of rows for the inverted left half pyramid: ");
+        scanf("%d", &rows);
+        invertedLeftHalfPyramid(rows);
+          getchar(); 
+    } else if (strcmp(selectedKeyword, "inverted full pyramid") == 0) {
+        int rows;
+        printf("Enter the number of rows for the inverted full pyramid: ");
+        scanf("%d", &rows);
+        invertedFullPyramid(rows);
+          getchar(); 
+    } else if (strcmp(selectedKeyword, "rhombus") == 0) {
+        int rows;
+        printf("Enter the number of rows for the rhombus: ");
+        scanf("%d", &rows);
+        rhombus(rows);
+          getchar(); 
+    } else if (strcmp(selectedKeyword, "hollow square") == 0) {
+        int rows;
+        printf("Enter the number of rows for the hollow square: ");
+        scanf("%d", &rows);
+        hollowSquare(rows);
+          getchar(); 
+    } else if (strcmp(selectedKeyword, "hollow full pyramid") == 0) {
+        int rows;
+        printf("Enter the number of rows for the hollow full pyramid: ");
+        scanf("%d", &rows);
+        hollowFullPyramid(rows);
+          getchar(); 
+    } else if (strcmp(selectedKeyword, "hollow full inverted pyramid") == 0) {
+        int rows;
+        printf("Enter the number of rows for the hollow full inverted pyramid: ");
+        scanf("%d", &rows);
+        hollowFullInvertedPyramid(rows);
+          getchar(); 
+    } else if (strcmp(selectedKeyword, "diamond") == 0) {
+        int n;
+        printf("Enter the size of the diamond: ");
+        scanf("%d", &n);
+        diamond(n);
+          getchar(); 
+    } else if (strcmp(selectedKeyword, "hourglass") == 0) {
+        int rows;
+        printf("Enter the number of rows for the hourglass pattern: ");
+        scanf("%d", &rows);
+        hourglass(rows);
+          getchar(); 
+    } else if (strcmp(selectedKeyword, "floyd's triangle") == 0) {
+        int rows;
+        printf("Enter the number of rows for Floyd's triangle: ");
+        scanf("%d", &rows);
+        floydsTriangle(rows);
+          getchar(); 
+    } else if (strcmp(selectedKeyword, "pascal's triangle") == 0) {
+        int rows;
+        printf("Enter the number of rows for Pascal's triangle: ");
+        scanf("%d", &rows);
+        pascalsTriangle(rows);
+          getchar(); 
+    }  else if (strcmp(selectedKeyword, "linear search unique") == 0) {
+        int size;
+        printf("Enter the size of the array: ");
+        scanf("%d", &size);
+
+        int arr[size];
+        printf("Enter the elements of the array:\n");
+        for (int i = 0; i < size; i++) {
+            scanf("%d", &arr[i]);
+        }
+
+        int key;
+        printf("Enter the key to search: ");
+        scanf("%d", &key);
+
+        int index = linearSearchUnique(arr, size, key);
+        if (index != -1) {
+            printf("Key %d found at index %d.\n", key, index);
+        } else {
+            printf("Key %d not found in the array.\n", key);
+        }
+        getchar();
+    }
+
+    // Linear Search for Non-Unique Data
+    else if (strcmp(selectedKeyword, "linear search non-unique") == 0) {
+        int size;
+        printf("Enter the size of the array: ");
+        scanf("%d", &size);
+
+        int arr[size];
+        printf("Enter the elements of the array:\n");
+        for (int i = 0; i < size; i++) {
+            scanf("%d", &arr[i]);
+        }
+
+        int key;
+        printf("Enter the key to search: ");
+        scanf("%d", &key);
+
+        linearSearchNonUnique(arr, size, key);
+        getchar();
+    }
+
+    // Binary Search
+    else if (strcmp(selectedKeyword, "binary search") == 0) {
+        int size;
+        printf("Enter the size of the sorted array: ");
+        scanf("%d", &size);
+
+        int arr[size];
+        printf("Enter the elements of the sorted array:\n");
+        for (int i = 0; i < size; i++) {
+            scanf("%d", &arr[i]);
+        }
+
+        int key;
+        printf("Enter the key to search: ");
+        scanf("%d", &key);
+
+        int index = binarySearch(arr, 0, size - 1, key);
+        if (index != -1) {
+            printf("Key %d found at index %d.\n", key, index);
+        } else {
+            printf("Key %d not found in the array.\n", key);
+        }
+        getchar();
+    }
+
+    // Stack Algorithm
+    else if (strcmp(selectedKeyword, "stack algorithm") == 0) {
+        struct Stack stack;
+        initialize(&stack);
+
+        push(&stack, 1);
+        push(&stack, 2);
+        push(&stack, 3);
+
+        display(&stack);
+
+        pop(&stack);
+        display(&stack);
+
+        pop(&stack);
+        pop(&stack);
+
+        display(&stack);
+        getchar();
+    }
+
+    // Queue Algorithm
+    else if (strcmp(selectedKeyword, "queue algorithm") == 0) {
+        struct Queue queue;
+        initializeQueue(&queue);
+
+        enqueue(&queue, 1);
+        enqueue(&queue, 2);
+        enqueue(&queue, 3);
+
+        displayQueue(&queue);
+
+        dequeue(&queue);
+        displayQueue(&queue);
+
+        dequeue(&queue);
+        dequeue(&queue);
+
+        displayQueue(&queue);
+        getchar();
+    }
+
+
+    else{
+        printf("Invalid keyword. Try again.\n");
+    }
+    
+    
+}
+
+void reverseString(char *str) {
+    int length = strlen(str);
+    int start = 0;
+    int end = length - 1;
+
+    while (start < end) {
+        // Swap characters at start and end indices
+        char temp = str[start];
+        str[start] = str[end];
+        str[end] = temp;
+
+        // Move indices towards the center
+        start++;
+        end--;
+    }
+}
+
+void toLowerCase(char *str) {
+    for (int i = 0; str[i]; i++) {
+        str[i] = tolower(str[i]);
+    }
+}
+
+const char *findSimilarKeyword(const char *input, const char *keywordList[], int numKeywords, int similarityThreshold) {
+    const char *similarKeyword = NULL;
+    int minDifference = similarityThreshold; // Initialize with the similarity threshold
+
+    for (int i = 0; i < numKeywords; i++) {
+        int len1 = strlen(input);
+        int len2 = strlen(keywordList[i]);
+        int difference = 0;
+
+        // Compare characters of the two strings
+        for (int j = 0; j < len1 && j < len2; j++) {
+            if (input[j] != keywordList[i][j]) {
+                difference++;
+            }
+        }
+
+        // Update similarKeyword if the current keyword is more similar
+        if (difference < minDifference) {
+            minDifference = difference;
+            similarKeyword = keywordList[i];
+        }
+    }
+
+    // Check if the similarity is below the threshold
+    if (minDifference > similarityThreshold) {
+        return NULL;
+    }
+
+    return similarKeyword;
+}
+
+void factorial(int n) {
+    int result = 1;
+    for (int i = 2; i <= n; i++) {
+        result *= i;
+    }
+    printf("Factorial: %d\n", result);
+}
+
+void bubbleSort(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                // swap arr[j] and arr[j + 1]
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+
+void findMinimum(int arr[], int n) {
+    int min = arr[0];
+    for (int i = 1; i < n; i++) {
+        if (arr[i] < min) {
+            min = arr[i];
+        }
+    }
+    printf("Minimum value: %d\n", min);
+}
+
+void findMaximum(int arr[], int n) {
+    int max = arr[0];
+    for (int i = 1; i < n; i++) {
+        if (arr[i] > max) {
+            max = arr[i];
+        }
+    }
+    printf("Maximum value: %d\n", max);
+}
+
+void romanToInt(char *s) {
+    int values[26]; // Array to store values for each Roman numeral letter
+    values['I' - 'A'] = 1;
+    values['V' - 'A'] = 5;
+    values['X' - 'A'] = 10;
+    values['L' - 'A'] = 50;
+    values['C' - 'A'] = 100;
+    values['D' - 'A'] = 500;
+    values['M' - 'A'] = 1000;
+
+    int result = 0;
+    int prev = 0; // Store the value of the previous character
+    int flag = 0;
+
+    int length = strlen(s);
+
+    for (int i = 0; i < length; i++) {
+        int value = values[s[i] - 'A'];
+
+        if (value == 0) {
+            // Invalid Roman numeral character
+            flag = -1;
+            break;
+        }
+
+        if (value > prev) {
+            if ((s[i] == 'V' || s[i] == 'X') && prev != 0 && prev != 1) {
+                // Invalid subtraction case
+                flag = -1;
+                break;
+            }
+            if ((s[i] == 'L' || s[i] == 'C') && prev != 0 && prev != 10) {
+                // Invalid subtraction case
+                flag = -1;
+                break;
+            }
+            if ((s[i] == 'D' || s[i] == 'M') && prev != 0 && prev != 100) {
+                // Invalid subtraction case
+                flag = -1;
+                break;
+            }
+
+            // Subtract twice the previous value
+            result += value - 2 * prev;
+        } else {
+            result += value;
+        }
+
+        prev = value; // Update the previous value
+    }
+
+    if (flag == -1)
+        printf("It can't be converted into an integer.\n");
+    else
+        printf("After converting into integer: %d\n", result);
+}
+void rightHalfPyramid(int rows) {
+    for (int i = 1; i <= rows; i++) {
+        for (int j = 1; j <= i; j++) {
+            printf("* ");
+        }
+        printf("\n");
+    }
+}
+
+void leftHalfPyramid(int rows) {
+    for (int i = 1; i <= rows; i++) {
+        for (int j = 1; j <= rows - i; j++) {
+            printf("  ");
+        }
+        for (int k = 1; k <= i; k++) {
+            printf("* ");
+        }
+        printf("\n");
+    }
+}
+
+void fullPyramid(int rows) {
+    for (int i = 1, space = rows - 1; i <= rows; i++, space--) {
+        for (int j = 1; j <= space; j++) {
+            printf("  ");
+        }
+        for (int k = 1; k <= 2 * i - 1; k++) {
+            printf("* ");
+        }
+        printf("\n");
+    }
+}
+
+void invertedRightHalfPyramid(int rows) {
+    for (int i = 1; i <= rows; i++) {
+        for (int j = 1; j <= rows - i; j++) {
+            printf("  ");
+        }
+        for (int k = 1; k <= i; k++) {
+            printf("* ");
+        }
+        printf("\n");
+    }
+}
+
+void invertedLeftHalfPyramid(int rows) {
+    for (int i = 1; i <= rows; i++) {
+        for (int j = 1; j < i; j++) {
+            printf("  ");
+        }
+        for (int k = 1; k <= rows - i + 1; k++) {
+            printf("* ");
+        }
+        printf("\n");
+    }
+}
+
+void invertedFullPyramid(int rows) {
+    for (int i = 1; i <= rows; i++) {
+        for (int j = 1; j < i; j++) {
+            printf("  ");
+        }
+        for (int k = 1; k <= 2 * (rows - i) + 1; k++) {
+            printf("* ");
+        }
+        printf("\n");
+    }
+}
+
+void rhombus(int rows) {
+    for (int i = 1; i <= rows; i++) {
+        for (int j = 1; j <= rows - i; j++) {
+            printf("  ");
+        }
+        for (int k = 1; k <= 2 * i - 1; k++) {
+            printf("* ");
+        }
+        printf("\n");
+    }
+    for (int i = rows - 1; i >= 1; i--) {
+        for (int j = 1; j <= rows - i; j++) {
+            printf("  ");
+        }
+        for (int k = 1; k <= 2 * i - 1; k++) {
+            printf("* ");
+        }
+        printf("\n");
+    }
+}
+
+void hollowSquare(int rows) {
+    for (int i = 1; i <= rows; i++) {
+        for (int j = 1; j <= rows; j++) {
+            if (i == 1 || i == rows || j == 1 || j == rows) {
+                printf("* ");
+            } else {
+                printf("  ");
+            }
+        }
+        printf("\n");
+    }
+}
+
+void hollowFullPyramid(int rows) {
+    for (int i = 1, space = rows - 1; i <= rows; i++, space--) {
+        for (int j = 1; j <= space; j++) {
+            printf("  ");
+        }
+        for (int k = 1; k <= 2 * i - 1; k++) {
+            if (k == 1 || k == 2 * i - 1 || i == rows) {
+                printf("* ");
+            } else {
+                printf("  ");
+            }
+        }
+        printf("\n");
+    }
+}
+
+void hollowFullInvertedPyramid(int rows) {
+    for (int i = 1; i <= rows; i++) {
+        for (int j = 1; j < i; j++) {
+            printf("  ");
+        }
+        for (int k = 1; k <= 2 * (rows - i) + 1; k++) {
+            if (k == 1 || k == 2 * (rows - i) + 1 || i == 1) {
+                printf("* ");
+            } else {
+                printf("  ");
+            }
+        }
+        printf("\n");
+    }
+}
+
+void diamond(int n) {
+    int space = n - 1;
+    for (int i = 1; i <= n; i++, space--) {
+        for (int j = 1; j <= space; j++) {
+            printf("  ");
+        }
+        for (int k = 1; k <= 2 * i - 1; k++) {
+            printf("* ");
+        }
+        printf("\n");
+    }
+    space = 1;
+    for (int i = n - 1; i >= 1; i--, space++) {
+        for (int j = 1; j <= space; j++) {
+            printf("  ");
+        }
+        for (int k = 1; k <= 2 * i - 1; k++) {
+            printf("* ");
+        }
+        printf("\n");
+    }
+}
+
+void hourglass(int rows) {
+    for (int i = rows; i >= 1; i--) {
+        for (int j = 1; j <= rows - i; j++) {
+            printf("  ");
+        }
+        for (int k = 1; k <= 2 * i - 1; k++) {
+            printf("* ");
+        }
+        printf("\n");
+    }
+    for (int i = 2; i <= rows; i++) {
+        for (int j = 1; j <= rows - i; j++) {
+            printf("  ");
+        }
+        for (int k = 1; k <= 2 * i - 1; k++) {
+            printf("* ");
+        }
+        printf("\n");
+    }
+}
+
+void floydsTriangle(int rows) {
+    int count = 1;
+    for (int i = 1; i <= rows; i++) {
+        for (int j = 1; j <= i; j++) {
+            printf("%d ", count++);
+        }
+        printf("\n");
+    }
+}
+
+void pascalsTriangle(int rows) {
+    for (int i = 0; i < rows; i++) {
+        int coef = 1;
+        for (int j = 1; j <= rows - i; j++) {
+            printf("  ");
+        }
+        for (int k = 0; k <= i; k++) {
+            printf("%4d", coef);
+            coef = coef * (i - k) / (k + 1);
+        }
+        printf("\n");
+    }
+}
+int linearSearchUnique(int arr[], int size, int key) {
+    for (int i = 0; i < size; i++) {
+        if (arr[i] == key) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+// Linear Search for Non-Unique Data
+void linearSearchNonUnique(int arr[], int size, int key) {
+    int found = 0;
+
+    printf("Key %d found at indices: ", key);
+    for (int i = 0; i < size; i++) {
+        if (arr[i] == key) {
+            printf("%d ", i);
+            found = 1;
+        }
+    }
+
+    if (!found) {
+        printf("Key not found in the array.\n");
+    } else {
+        printf("\n");
+    }
+}
+
+// Binary Search
+int binarySearch(int arr[], int low, int high, int key) {
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+
+        if (arr[mid] == key) {
+            return mid;
+        }
+
+        if (arr[mid] < key) {
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+    }
+    return -1;
+}
+
+
+
+void initialize(struct Stack* stack) {
+    stack->top = -1;
+}
+
+
+
+
+
+
+
+
+// Queue Algorithm
+
+
+void initializeQueue(struct Queue* queue) {
+    queue->front = -1;
+    queue->rear = -1;
+}
+
+int isQueueEmpty(struct Queue* queue) {
+    return (queue->front == -1 && queue->rear == -1);
+}
+
+int isQueueFull(struct Queue* queue) {
+    return (queue->rear + 1) % MAX_SIZE == queue->front;
+}
+
+void enqueueQueue(struct Queue* queue, int value) {
+    if (isQueueFull(queue)) {
+        printf("Queue overflow. Cannot enqueue %d into the queue.\n", value);
+    } else {
+        if (isQueueEmpty(queue)) {
+            queue->front = 0;
+        }
+        queue->rear = (queue->rear + 1) % MAX_SIZE;
+        queue->items[queue->rear] = value;
+        printf("%d enqueued into the queue.\n", value);
+    }
+}
+
+void dequeue(struct Queue* queue) {
+    if (isQueueEmpty(queue)) {
+        printf("Queue underflow. Cannot dequeue from an empty queue.\n");
+    } else {
+        int removedValue = queue->items[queue->front];
+        printf("%d dequeued from the queue.\n", removedValue);
+
+        if (queue->front == queue->rear) {
+            initializeQueue(queue);
+        } else {
+            queue->front = (queue->front + 1) % MAX_SIZE;
+        }
+    }
+}
+
+void displayQueue(struct Queue* queue) {
+    if (isQueueEmpty(queue)) {
+        printf("Queue is empty.\n");
+    } else {
+        printf("Queue elements: ");
+        int i = queue->front;
+        do {
+            printf("%d ", queue->items[i]);
+            i = (i + 1) % MAX_SIZE;
+        } while (i != (queue->rear + 1) % MAX_SIZE);
+        printf("\n");
+    }
+}
+
+// Linked List
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+void pushLinkedList(struct Node** head, int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = value;
+    newNode->next = *head;
+    *head = newNode;
+}
+
+void displayLinkedList(struct Node* head) {
+    printf("Linked List elements: ");
+    while (head != NULL) {
+        printf("%d ", head->data);
+        head = head->next;
+    }
+    printf("\n");
+}
+void display(struct Stack* stack) {
+    if (isEmptys(stack)) {
+        printf("Stack is empty.\n");
+    } else {
+        printf("Stack elements: ");
+        for (int i = 0; i <= stack->top; i++) {
+            printf("%d ", stack->items[i]);
+        }
+        printf("\n");
+    }
+}
+    // Function to enqueue an element into the queue
+void enqueue(struct Queue* queue, int value) {
+    if (isFullq(queue)) {
+        printf("Queue overflow. Cannot enqueue %d into the queue.\n", value);
+    } else {
+        if (isEmptyq(queue)) {
+            queue->front = 0;
+        }
+        queue->rear = (queue->rear + 1) % MAX_SIZE;
+        queue->items[queue->rear] = value;
+        printf("%d enqueued into the queue.\n", value);
+    }
+}
+
+// Function to check if the stack is full
+int isFulls(struct Stack* stack) {
+    return stack->top == MAX_SIZE - 1;
+}
+int isFullq(struct Queue* queue) {
+    return (queue->rear + 1) % MAX_SIZE == queue->front;
+}
+
+int isEmptyq(struct Queue* queue) {
+    return (queue->front == -1 && queue->rear == -1);
+}
+void insertionSort(int arr[], int n) {
+    int i, key, j;
+    for (i = 1; i < n; i++) {
+        key = arr[i];
+        j = i - 1;
+
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j = j - 1;
+        }
+        arr[j + 1] = key;
+    }
+}
+void selectionSort(int arr[], int n) {
+    int i, j, min_idx;
+    for (i = 0; i < n - 1; i++) {
+        min_idx = i;
+        for (j = i + 1; j < n; j++)
+            if (arr[j] < arr[min_idx])
+                min_idx = j;
+
+        int temp = arr[min_idx];
+        arr[min_idx] = arr[i];
+        arr[i] = temp;
+    }
+}
+void merge(int arr[], int l, int m, int r) {
+    int i, j, k;
+    int n1 = m - l + 1;
+    int n2 = r - m;
+
+    int L[n1], R[n2];
+
+    for (i = 0; i < n1; i++)
+        L[i] = arr[l + i];
+    for (j = 0; j < n2; j++)
+        R[j] = arr[m + 1 + j];
+
+    i = 0;
+    j = 0;
+    k = l;
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            arr[k] = L[i];
+            i++;
+        } else {
+            arr[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < n1) {
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+
+    while (j < n2) {
+        arr[k] = R[j];
+        j++;
+        k++;
+    }
+}
+
+void mergeSort(int arr[], int l, int r) {
+    if (l < r) {
+        int m = l + (r - l) / 2;
+
+        mergeSort(arr, l, m);
+        mergeSort(arr, m + 1, r);
+
+        merge(arr, l, m, r);
+    }
+}
+double power(double base, double exponent) {
+    return pow(base, exponent);
+}
+
+double squareRoot(double num) {
+    return sqrt(num);
+}
+
+double logarithm(double num, double base) {
+    return log(num) / log(base);
+}
+
+int gcd(int a, int b) {
+    if (b == 0) {
+        return a;
+    } else {
+        return gcd(b, a % b);
+    }
+}
+
+int lcm(int a, int b) {
+    return (a * b) / gcd(a, b);
+}
+
+double absoluteValue(double num) {
+    return fabs(num);
+}
+
+double sine(double angle) {
+    return sin(angle);
+}
+
+double cosine(double angle) {
+    return cos(angle);
+}
+
+double tangent(double angle) {
+    return tan(angle);
+}
+
+double exponential(double base, double exponent) {
+    return exp(exponent * log(base));
+}
+int isPalindrome(const char *str) {
+    int len = strlen(str);
+    for (int i = 0; i < len / 2; i++) {
+        if (str[i] != str[len - i - 1]) {
+            return 0; // Not a palindrome
+        }
+    }
+    return 1; // Palindrome
+}
+
+// Function to count vowels and consonants in a string
+void countVowelsAndConsonants(const char *str, int *vowels, int *consonants) {
+    *vowels = 0;
+    *consonants = 0;
+    while (*str) {
+        char c = tolower(*str);
+        if (isalpha(c)) {
+            if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u') {
+                (*vowels)++;
+            } else {
+                (*consonants)++;
+            }
+        }
+        str++;
+    }
+}
+
+// Function to remove spaces from a string
+void removeSpaces(char *str) {
+    int len = strlen(str);
+    int j = 0;
+    for (int i = 0; i < len; i++) {
+        if (str[i] != ' ') {
+            str[j++] = str[i];
+        }
+    }
+    str[j] = '\0'; // Null-terminate the modified string
+}
+
+// Function to check if a substring is present in a string
+int substringSearch(const char *str, const char *substring) {
+    int len = strlen(str);
+    int subLen = strlen(substring);
+    for (int i = 0; i <= len - subLen; i++) {
+        int j;
+        for (j = 0; j < subLen; j++) {
+            if (str[i + j] != substring[j]) {
+                break;
+            }
+        }
+        if (j == subLen) {
+            return 1; // Substring found
+        }
+    }
+    return 0; // Substring not found
+}
+
+// Function to concatenate two strings
+void concatenateStrings(char *dest, const char *src) {
+    strcat(dest, src);
+}
+void reverseWords(char *str) {
+    int length = strlen(str);
+
+    // Reverse the entire string
+    for (int i = 0; i < length / 2; i++) {
+        char temp = str[i];
+        str[i] = str[length - i - 1];
+        str[length - i - 1] = temp;
+    }
+
+    // Reverse each word in the string
+    int start = 0;
+    for (int i = 0; i <= length; i++) {
+        if (str[i] == ' ' || str[i] == '\0') {
+            // Found the end of a word, reverse it
+            int end = i - 1;
+            while (start < end) {
+                char temp = str[start];
+                str[start] = str[end];
+                str[end] = temp;
+                start++;
+                end--;
+            }
+            start = i + 1;
+        }
+    }
+}
+
+// Function to replace a substring in a string
+void replaceSubstring(char *str, const char *substring, const char *replacement) {
+    int len_str = strlen(str);
+    int len_substring = strlen(substring);
+    int len_replacement = strlen(replacement);
+
+    char *result = (char *)malloc(len_str * 2); // Allocate memory for the result string
+
+    int i = 0, j = 0, k;
+
+    while (i < len_str) {
+        // Check if the substring is found
+        if (strncmp(str + i, substring, len_substring) == 0) {
+            // If found, copy the replacement string
+            for (k = 0; k < len_replacement; k++) {
+                result[j++] = replacement[k];
+            }
+            i += len_substring; // Move past the substring in the original string
+        } else {
+            // If not found, copy the character from the original string
+            result[j++] = str[i++];
+        }
+    }
+
+    result[j] = '\0'; // Add the null terminator to the result string
+
+    // Copy the modified result back to the original string
+    strcpy(str, result);
+
+    free(result); // Free the allocated memory
+}
+int stringLength(const char *str) {
+    int length = 0;
+    while (str[length] != '\0') {
+        length++;
+    }
+    return length;
+}
+// Function to shift elements of an array to the right by k positions
+void shiftRight(int arr[], int n, int k) {
+    for (int i = n - 1; i >= 0; i--) {
+        arr[i + k] = arr[i];
+    }
+
+    for (int i = 0; i < k; i++) {
+        arr[i] = 0; // Assuming 0 as the default value for shifted positions
+    }
+}
+
+// Function to shift elements of an array to the left by k positions
+void shiftLeft(int arr[], int n, int k) {
+    for (int i = 0; i < n - k; i++) {
+        arr[i] = arr[i + k];
+    }
+
+    for (int i = n - k; i < n; i++) {
+        arr[i] = 0; // Assuming 0 as the default value for shifted positions
+    }
+}
+void quickSort(int arr[], int low, int high) {
+    if (low < high) {
+        // Partition the array into two halves
+        int pivotIndex = partition(arr, low, high);
+
+        // Recursively sort each half
+        quickSort(arr, low, pivotIndex - 1);
+        quickSort(arr, pivotIndex + 1, high);
+    }
+}
+
+// Helper function for Quick Sort to partition the array
+int partition(int arr[], int low, int high) {
+    int pivot = arr[high];
+    int i = (low - 1);
+
+    for (int j = low; j <= high - 1; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            // Swap arr[i] and arr[j]
+            int temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
+    }
+
+    // Swap arr[i + 1] and arr[high] (pivot)
+    int temp = arr[i + 1];
+    arr[i + 1] = arr[high];
+    arr[high] = temp;
+
+    return i + 1;
+}
+
+
+void heapSort(int arr[], int n) {
+    // Build a max heap
+    for (int i = n / 2 - 1; i >= 0; i--) {
+        heapify(arr, n, i);
+    }
+
+    // Extract elements from the heap one by one
+    for (int i = n - 1; i > 0; i--) {
+        // Swap the root (maximum element) with the last element
+        int temp = arr[0];
+        arr[0] = arr[i];
+        arr[i] = temp;
+
+        // Heapify the reduced heap
+        heapify(arr, i, 0);
+    }
+}
+
+// Helper function for Heap Sort to heapify a subtree rooted with node i
+void heapify(int arr[], int n, int i) {
+    int largest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+
+    if (left < n && arr[left] > arr[largest]) {
+        largest = left;
+    }
+
+    if (right < n && arr[right] > arr[largest]) {
+        largest = right;
+    }
+
+    if (largest != i) {
+        // Swap arr[i] and arr[largest]
+        int temp = arr[i];
+        arr[i] = arr[largest];
+        arr[largest] = temp;
+
+        // Recursively heapify the affected sub-tree
+        heapify(arr, n, largest);
+    }
+}
+// Function definition for quadratic roots
+void quadraticRoots() {
+    double a, b, c, D, real_part, imaginary_part;
+
+    // Input the coefficients a, b, c
+    printf("Enter the coefficients a, b, c for the quadratic equation (ax^2 + bx + c): ");
+    scanf("%lf %lf %lf", &a, &b, &c);
+
+    // Calculate the discriminant D
+    D = b * b - 4 * a * c;
+
+    // Determine the type of the roots and calculate their values
+    if (D > 0) {
+        // Two distinct real roots exist
+        real_part = (-b + sqrt(D)) / (2 * a);
+        printf("Root 1 = %.2lf\n", real_part);
+
+        real_part = (-b - sqrt(D)) / (2 * a);
+        printf("Root 2 = %.2lf\n", real_part);
+    } else if (D == 0) {
+        // One real root exists
+        real_part = -b / (2 * a);
+        printf("Root 1 = Root 2 = %.2lf\n", real_part);
+    } else {
+        // No real roots exist
+        real_part = -b / (2 * a);
+        imaginary_part = sqrt(fabs(D)) / (2 * a);
+        printf("Root 1 = %.2lf + %.2lfi\n", real_part, imaginary_part);
+        printf("Root 2 = %.2lf - %.2lfi\n", real_part, imaginary_part);
+    }
+}
+// Function definition for BMI calculation
+void calculateBMI() {
+    float weight, height, BMI;
+
+    printf("Enter weight (in kilograms): ");
+    scanf("%f", &weight);
+
+    printf("Enter height (in meters): ");
+    scanf("%f", &height);
+
+    BMI = weight / (height * height);
+
+    if (BMI <= 18.5) {
+        printf("Underweight\n");
+        printf("%.1f", BMI);
+    } else if (BMI > 18.5 && BMI <= 24.9) {
+        printf("Normal\n");
+        printf("%.1f", BMI);
+    } else if (BMI > 24.9 && BMI < 29.9) {
+        printf("Overweight\n");
+        printf("%.1f", BMI);
+    } else {
+        printf("Obese\n");
+    }
+}
+
+// Function definition for loan interest calculation
+void calculateLoanInterest() {
+    int amt, time, rate, I;
+
+    printf("Enter loan amount: ");
+    scanf("%d", &amt);
+
+    printf("Enter interest rate: ");
+    scanf("%d", &rate);
+
+    printf("Enter loan term in days: ");
+    scanf("%d", &time);
+
+    I = ((amt * time * rate / 100) / 365);
+
+    printf("%d is your interest\n", I);
+}
+// Function definition for matchstick game
+void playMatchstickGame() {
+    int matchsticks = 21;
+
+    while (matchsticks > 0) {
+        int userPick;
+        printf("Your turn. Pick 1, 2, 3, or 4 matchsticks: ");
+        scanf("%d", &userPick);
+
+        if (userPick < 1 || userPick > 4 || userPick > matchsticks) {
+            printf("Invalid input. Please pick 1, 2, 3, or 4 matchsticks.\n");
+            continue;
+        }
+
+        matchsticks -= userPick;
+        printf("You picked %d matchsticks. %d matchstick(s) remaining.\n", userPick, matchsticks);
+
+        if (matchsticks == 0) {
+            printf("Sorry, you picked the last matchstick. You lose!\n");
+            break;
+        }
+
+        int computerPick = 5 - userPick;
+        matchsticks -= computerPick;
+        printf("Computer picked %d matchstick(s). %d matchstick(s) remaining.\n", computerPick, matchsticks);
+
+        if (matchsticks == 0) {
+            printf("Congratulations! The computer picked the last matchstick. You win!\n");
+            break;
+        }
+    }
+}
+int findMaxLengthSubarray(int n, int A[], int sum) {
+    int start = 0, maxLength = 0;
+
+    for (int i = 0; i < n; i++) {
+        sum -= A[i];
+
+        while (sum < 0 && start < i) {
+            sum += A[start];
+            start++;
+        }
+
+        if (sum == 0) {
+            maxLength = (i - start + 1) > maxLength ? (i - start + 1) : maxLength;
+        }
+    }
+
+    return maxLength;
+}
+int fib(int n) {
+    if (n <= 1)
+        return n;
+    else
+        return fib(n - 1) + fib(n - 2);
+}
+
+// Function to display Fibonacci numbers
+void printfib(int n) {
+    printf("The first %d Fibonacci numbers are:\n", n);
+    for (int i = 0; i < n; i++) {
+        printf("%d ", fib(i));
+    }
+    printf("\n");
+}
+
+
+void SentenceCase(char *Text, int *size) {
+    if (*size > 0 && (Text[0] >= 'a' && Text[0] <= 'z')) {
+        Text[0] = Text[0] - 32;
+    }
+    for (int i = 1; i < *size; i++) {
+        if (Text[i - 1] == '.' && (Text[i] >= 'a' && Text[i] <= 'z')) {
+            Text[i] = Text[i] - 32;
+        }
+    }
+}
+
+
+
+
+
+
+
