@@ -122,7 +122,7 @@ void heapify(int arr[], int n, int i);
 
 void toLowerCase(char *str);
 const char *findSimilarKeyword(const char *input, const char *keywordList[], int numKeywords, int similarityThreshold);
-
+int confirmSimilarKeyword(const char *suggestedKeyword);
 void executeCode(const char *selectedKeyword);
 void displayOptions(const char *keywords[], int numKeywords);
 void displayCategories(const char *categories[], int numCategories);
@@ -166,7 +166,7 @@ int main() {
             if (selectedCategory == NULL) {
                 printf("Category not recognized. Searching for similar categories...\n");
                 selectedCategory = findSimilarKeyword(userInput, categories, numCategories, 2);
-                if (selectedCategory != NULL) {
+                if (selectedCategory != NULL && !confirmSimilarKeyword(selectedCategory)) {
                     printf("Invalid choice. Try again.\n");
                     continue;
                 } else if (selectedCategory == NULL) {
@@ -227,7 +227,7 @@ int main() {
 
                     if (selectedKeyword == NULL) {
                         selectedKeyword = findSimilarKeyword(keywordInput, keywords, numKeywords, 2);
-                        if (selectedKeyword != NULL ) {
+                        if (selectedKeyword != NULL && !confirmSimilarKeyword(selectedKeyword)) {
                             printf("Invalid choice. Try again.\n");
                             continue;
                         } else if (selectedKeyword == NULL) {
@@ -546,11 +546,11 @@ else if (strcmp(selectedKeyword, "shift left") == 0) {
             printf("%c", arr[i]);
         }
         printf("\n");
-	getchar();
+	
 
 
-}
-    
+
+    }
 	 else if (strcmp(selectedKeyword, "bubble sort") == 0) {
         int n;
         printf("Enter the number of elements in the array: ");
@@ -912,6 +912,15 @@ void toLowerCase(char *str) {
     for (int i = 0; str[i]; i++) {
         str[i] = tolower(str[i]);
     }
+}
+
+int confirmSimilarKeyword(const char *suggestedKeyword) {
+    char response[10]; // Increase the size to handle longer responses
+    printf("Did you mean '%s'? (yes/no): ", suggestedKeyword);
+    fgets(response, sizeof(response), stdin);
+    response[strcspn(response, "\n")] = '\0'; // Remove the newline character
+    toLowerCase(response);
+    return strcmp(response, "yes") == 0;
 }
 
 const char *findSimilarKeyword(const char *input, const char *keywordList[], int numKeywords, int similarityThreshold) {
@@ -1912,6 +1921,13 @@ void SentenceCase(char *Text, int *size) {
         }
     }
 }
+
+
+
+
+
+
+
 
 
 
